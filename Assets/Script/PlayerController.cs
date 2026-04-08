@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Game Over")]
     public GameOverUI gameOverUI;
+    public Animator animator;
 
     // 🔥 GUN SYSTEM
     [System.Serializable]
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        animator.SetFloat("Speed", Mathf.Abs(moveInput));
         if (isDead) return;
 
         moveInput = Input.GetAxis("Horizontal");
@@ -123,6 +125,10 @@ public class PlayerController : MonoBehaviour
     // 🔫 SHOOT
     void Shoot()
     {
+        if (hasGun)
+        {
+            animator.SetTrigger("Attack");
+        }
         if (!hasGun)
         {
             Debug.Log("No Gun Yet!");
@@ -251,5 +257,10 @@ public class PlayerController : MonoBehaviour
     {
         if (ammoText != null)
             ammoText.text = currentGun.gunName + " | Ammo: " + currentAmmo;
+    }
+
+    public void ResetVelocity()
+    {
+        rb.linearVelocity = Vector2.zero;
     }
 }
